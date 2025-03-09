@@ -1,0 +1,80 @@
+**How to Set Up Alexa Developer Console and Test Functions**
+
+1. Set Up an AWS Account
+- If you don’t already have an AWS account, sign up at aws.amazon.com.
+- Once signed up, you can access AWS Lambda from the AWS Management Console.
+
+
+2. Create a New AWS Lambda Function
+
+Step 1: Navigate to AWS Lambda
+- Go to the AWS Management Console.
+- In the search bar, type Lambda and click on AWS Lambda.
+
+Step 2: Create a New Lambda Function
+- Click the Create Function button.
+- Choose the option Author from scratch.
+- Fill in the following details:
+
+Function Name: e.g. MedicalHistoryTakerSkill
+Runtime: Choose Python 3.x (select the latest stable version available, e.g., Python 3.9).
+Under Permissions: Choose Create a new role with basic Lambda permissions (this allows Lambda to log data in CloudWatch). -> Click Create Function.
+
+Step 3: Set Up the Lambda Function Codes
+- Once your Lambda function is created, you will see a code editor where you can input your Python code for handling Alexa requests.
+- You can use the ask-sdk library to handle Alexa intents in Python.
+
+Step 4: Install Dependencies (Alexa SDK and others)
+- Since AWS Lambda doesn't provide an interactive environment to install packages directly, you'll need to package your dependencies (like ask-sdk) and upload them as a deployment package.
+
+Here’s how:
+- Create a new folder on your local machine (e.g., medical_history_skill).
+- download 2 files: lambda_function.py and requirements.txt (or clone the repo and delete irrevant files) from github https://github.com/VMHTMELPOLY/VMHT.git into the folder you just created
+- run: pip install -r requirements.txt
+- zip the lambda_function.py and all dependancies (you won't need requirements.txt anymore so delete it) before zipping
+*To zip, you can run: zip -r FolderName.zip .
+
+Step 5: Upload the Code to Lambda
+- Go back to the AWS Lambda console.
+- In the Lambda function, scroll down to the Code section.
+- Click Upload from > .zip file.
+- Upload the .zip file that you created earlier (which contains both the lambda_function.py file and the ask-sdk dependencies).
+- Once uploaded, save the changes.
+
+
+3. Set Up the Alexa Skill in the Developer Console
+
+Step 1: Create a New Alexa Skill
+- Go to the Alexa Developer Console and click Create Skill.
+- Choose the Custom skill option and click Create.
+- In the Choose a template section, select Start from scratch.
+
+Step 2: Set Invocation Name
+- Set the Invocation Name for your skill, e.g., my medical
+
+Step 3: Define Intents
+- Go to the Intents section and create two intents:
+- StartMedicalHistoryIntent: This is the intent that starts the conversation.
+- CaptureAnswerIntent: This will handle the response when the patient provides their name.
+
+Step 4: Link AWS Lambda to Alexa Skill
+- Go to the Endpoint section in the Alexa Developer Console (left-hand menu).
+- Under Service Endpoint Type, select AWS Lambda ARN.
+- Choose the region where your Lambda function is hosted (usually North America if you are in the U.S.).
+- In the Default Region field, paste the ARN (Amazon Resource Name) of your Lambda function. You can find this ARN in the AWS Lambda console under ARN at the top of the Lambda function page.
+
+Step 5: Save and Build
+- Click Save Endpoint.
+- After saving, click Build to deploy the interaction model.
+
+
+4. Test Your Skill
+
+Step 1: Use the Alexa Simulator
+- In the Alexa Developer Console, go to the Test section.
+- Enable testing for your skill.
+- Use the Alexa Simulator to invoke your skill by saying “Alexa, start medical history taker.”
+- Alexa should trigger the Lambda function, and you should hear your responses, such as “Welcome! What is your full name?”
+
+Step 2: Monitor in AWS CloudWatch
+- You can monitor the skill’s performance by viewing the logs in AWS CloudWatch. This will help you troubleshoot any issues with your Lambda function.
